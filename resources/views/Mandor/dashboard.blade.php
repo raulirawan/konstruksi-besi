@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-admin')
 
-@section('title','Dashboard Admin')
+@section('title','Dashboard Mandor')
 
 @section('content')
 <div class="content-wrapper">
@@ -25,13 +25,13 @@
       <div class="container-fluid">
         <div class="row">
             <!-- ./col -->
-            <div class="col-lg-3 col">
+            <div class="col-lg-6 col">
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
                   <h3>{{ $sukses ?? '' }}</h3>
 
-                  <p>Total Klien</p>
+                  <p>Data Pekerjaan</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
@@ -39,13 +39,13 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col">
+            <div class="col-lg-6 col">
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
                   <h3>{{ $pending ?? '' }}</h3>
 
-                  <p>Transaksi Sukses</p>
+                  <p>Total Progress</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
@@ -53,32 +53,7 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>{{ $gagal ?? '' }}</h3>
 
-                  <p>Transaksi Pending</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                  <div class="inner">
-                    <h3>{{ $gagal ?? '' }}</h3>
-
-                    <p>Transaksi Batal</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                  </div>
-                </div>
-              </div>
             <!-- ./col -->
           </div>
 
@@ -97,7 +72,7 @@
                 @endif
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Data Pengajuan Progress</h3>
+                        <h3 class="card-title">Data Pekerjaan</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -106,40 +81,41 @@
                                 <tr>
                                     <th style="width: 5%">No</th>
                                     <th>Klien</th>
-                                    <th>Mandor</th>
                                     <th>Project</th>
-                                    <th>Gambar</th>
                                     <th>Status</th>
-                                    <th style="width: 20%">Aksi</th>
+                                    <th style="width: 10%">Aksi</th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($mandor as $item)
+                                @foreach ($pekerjaan as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->email }}</td>
-                                        @if ($item->no_hp != NULL)
-                                        <td>{{ $item->no_hp }}</td>
+                                        <td>{{ $item->klien->name }}</td>
+                                        <td>{{ $item->portfolio->nama_project }}</td>
+                                        @if ($item->status == 'SUDAH DP')
+                                        <td>
+                                            <span class="badge badge-success">SUDAH DP</span>
+                                        </td>
+                                        @elseif ($item->status == 'PENDING')
+                                        <td>
+                                            <span class="badge badge-warning">PENDING</span>
+                                        </td>
+                                        @elseif ($item->status == 'LUNAS')
+                                        <td>
+                                            <span class="badge badge-success">LUNAS</span>
+                                        </td>
                                         @else
-                                        <td><span class="badge badge-danger">Tidak Ada</span></td>
+                                        <td>
+                                            <span class="badge badge-danger">BATAL</span>
+                                        </td>
                                         @endif
                                         <td>
-                                            <button type="button" id="edit" data-toggle="modal"
-                                                data-target="#modal-edit" data-id="{{ $item->id }}"
-                                                data-nama_mandor="{{ $item->name }}"
-                                                data-no_hp="{{ $item->no_hp }}"
-                                                class="btn btn-sm btn-primary" style='float: left;'>Edit</button>
-                                            <form action="{{ route('admin.mandor.delete', $item->id) }}"
-                                                method="POST" style='float: left; padding-left: 5px;'>
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Yakin ?')">Hapus</button>
-                                            </form>
+                                            <a href="{{ route('mandor.detail.pekerjaan.index', $item->id) }}"  class="btn btn-info btn-sm"><i class="fas fa-eye"></i>Detail</a>
                                         </td>
+
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
 
                             </tbody>
 

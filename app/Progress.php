@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Progress extends Model
 {
-    protected $table = 'pembayaran';
+    protected $table = 'progress';
 
     public function transaksi()
     {

@@ -17,12 +17,21 @@ class PortfolioController extends Controller
 
     public function store(Request $request)
     {
-        $data = new User();
-        $data->name = $request->nama_portfolio;
-        $data->email = $request->email;
-        $data->password = bcrypt($request->password);
-        $data->no_hp = $request->no_hp;
-        $data->roles = 'PORTFOLIO';
+        $data = new Portfolio();
+        $data->nama_project = $request->nama_project;
+        $data->harga_jual = $request->harga_jual;
+        $data->harga_jual_pasang = $request->harga_jual_pasang;
+
+        if($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $tujuan_upload = 'image/portfolio/';
+            $nama_file = time()."_".$file->getClientOriginalName();
+            $nama_file = str_replace(' ', '', $nama_file);
+            $file->move($tujuan_upload,$nama_file);
+
+            $data->gambar = $tujuan_upload.$nama_file;
+        }
+
         $data->save();
 
         if($data != null) {
@@ -34,10 +43,21 @@ class PortfolioController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = User::findOrFail($id);
+        $data = Portfolio::findOrFail($id);
 
-        $data->name = $request->nama_portfolio;
-        $data->no_hp = $request->no_hp;
+        $data->nama_project = $request->nama_project;
+        $data->harga_jual = $request->harga_jual;
+        $data->harga_jual_pasang = $request->harga_jual_pasang;
+
+        if($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $tujuan_upload = 'image/portfolio/';
+            $nama_file = time()."_".$file->getClientOriginalName();
+            $nama_file = str_replace(' ', '', $nama_file);
+            $file->move($tujuan_upload,$nama_file);
+            unlink($data->gambar);
+            $data->gambar = $tujuan_upload.$nama_file;
+        }
 
         $data->save();
 
@@ -50,9 +70,10 @@ class PortfolioController extends Controller
 
     public function delete($id)
     {
-        $data = User::findOrFail($id);
+        $data = Portfolio::findOrFail($id);
 
         if($data != null) {
+            unlink($data->gambar);
             $data->delete();
             return redirect()->route('admin.portfolio.index')->with('success','Data Berhasil di Hapus');
         } else {

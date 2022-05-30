@@ -3,7 +3,6 @@
 @section('title', 'Halaman Transaksi')
 
 @section('content')
-
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -18,6 +17,7 @@
                             <li class="breadcrumb-item active">Transaksi</li>
                         </ol>
                     </div>
+
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -42,86 +42,51 @@
                             <div class="card-header">
                                 <h3 class="card-title">Data Transaksi</h3>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modal-global">
-                                    (+) Tambah Pembayaran Global
-                                </button>
-                                <button type="button" class="btn btn-info" data-toggle="modal"
-                                    data-target="#modal-per-siswa">
-                                    (+) Tambah Per Siswa
-                                </button>
+                            <div class="row input-daterange ml-2 mt-2">
+                                <div class="col-md-4">
+                                    <input type="date" name="from_date" id="from_date" value="{{ date('Y-m-d') }}" class="form-control"
+                                        placeholder="From Date" />
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="date" name="to_date" id="to_date"  value="{{ date('Y-m-d') }}" class="form-control"
+                                        placeholder="To Date" />
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" name="filter" id="filter" class="btn btn-primary">Filter</button>
+                                    <button type="button" name="refresh" id="refresh"
+                                        class="btn btn-default">Refresh</button>
+                                </div>
 
-                                <table id="example1" class="table table-bordered table-responsive table-striped">
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive">
+
+                                <table id="table-data"
+                                    class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th style="width: 5%">No</th>
-                                            <th style="width: 10%">Bulan</th>
-                                            <th style="width: 10%">Kode Transaksi</th>
-                                            <th style="width: 10%">NISN</th>
-                                            <th>Nama Siswa</th>
-                                            <th style="width: 10%">Status</th>
-                                            <th >Total Harga</th>
-                                            <th style="width: 10%">Is Active</th>
-                                            <th >Aksi</th>
-
+                                            <th style="width: 5%">Tanggal Transaksi</th>
+                                            <th>Kode Transaksi</th>
+                                            <th>Nama Klien</th>
+                                            <th>Nama Project</th>
+                                            <th>Tipe Transaksi</th>
+                                            <th>Status</th>
+                                            <th>Total Harga</th>
+                                            <th style="width: 15%">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($transaksi as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->created_at->format('F') }}</td>
-                                                <td>{{ $item->kode }}</td>
-                                                <td>{{ $item->siswa->nisn }}</td>
-                                                <td>{{ $item->siswa->name }}</td>
-                                               <td>
-                                                @if ($item->status == 'PENDING')
-                                                <span class="badge badge-warning">PENDING</span>
-                                                @elseif ($item->status == 'SUCCESS')
-                                                <span class="badge badge-success">SUKSES</span>
-                                                @else
-                                                <span class="badge badge-danger">GAGAL</span>
-                                                @endif
-                                               </td>
-                                                <td>{{ number_format($item->total_harga) }}</td>
-                                                <td>
-                                                    @if ($item->is_active == 1)
-                                                    <span class="badge badge-success">Aktif</span>
-                                                    @else
-                                                    <span class="badge badge-danger">Non Aktif</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('admin.transaksi.detail', $item->id) }}"
-                                                        class="btn btn-sm btn-info mr-1" style='float: left;'>Detail</a>
-                                                    @if ($item->is_active == 1)
-                                                    <a href="{{ route('admin.transaksi.non.active', $item->id) }}"
-                                                        class="btn btn-sm btn-danger mr-1" style='float: left;' onclick="return confirm('Yakin ?') ">Non Active</a>
-                                                    @else
-                                                    <a href="{{ route('admin.transaksi.active', $item->id) }}"
-                                                        class="btn btn-sm btn-success mr-1" style='float: left;' onclick="return confirm('Yakin ?') ">Set Active</a>
-                                                    @endif
-                                                    {{-- <button type="button" id="edit" data-toggle="modal"
-                                                        data-target="#modal-edit" data-id="{{ $item->id }}"
-                                                        data-transaksi="{{ $item->transaksi }}"
-                                                        class="btn btn-sm btn-primary" style='float: left;'>Edit</button> --}}
-
-                                                    {{-- <form action="{{ route('admin.transaksi.delete', $item->id) }}"
-                                                        method="POST" style='float: left; padding-left: 5px;'>
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('Yakin ?')">Hapus</button>
-                                                    </form> --}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
 
                                     </tbody>
-
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="6">Total</th>
+                                            <th id="total"></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
+                                {{-- {!! $dataTable->table() !!} --}}
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -135,190 +100,151 @@
         </section>
         <!-- /.content -->
     </div>
-
-    <!-- Modal Global -->
-    <div class="modal fade" id="modal-global" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pembayaran Global</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('admin.transaksi.global') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>Nama Pembayaran</label>
-                               <select  required name="pembayaran[]" id="pembayaran" class="form-control select2" id="pembayaran" multiple="multiple" data-placeholder="Pilih Pembayaran" style="width: 100%;">>
-                                    @foreach ($pembayaran as $pbyrn)
-                                        <option value="{{ $pbyrn->id }}">{{ $pbyrn->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" id="simpan" class="btn btn-primary">Simpan Data</button>
-                </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-
-
-      <!-- Modal Global -->
-      <div class="modal fade" id="modal-per-siswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pembayaran Per Siswa</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <form method="POST" action="{{ route('admin.transaksi.per.siswa') }}" enctype="multipart/form-data">
-                      @csrf
-                      <div class="card-body">
-                        <div class="form-group">
-                            <label>Nama Siswa</label>
-                           <select  name="siswa" id="siswa" class="form-control" id="siswa" style="width: 100%;" required>
-                                <option value="">-- Pilih Nama Siswa --</option>
-
-                                @foreach ($siswas as $siswa)
-                                    <option value="{{ $siswa->id }}">{{ $siswa->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                          <div class="form-group">
-                              <label>Nama Pembayaran</label>
-                             <select  name="pembayaran[]" id="pembayaran_siswa" class="form-control select2" id="pembayaran" multiple="multiple" required data-placeholder="Pilih Pembayaran" style="width: 100%;">>
-                                  @foreach ($pembayaran as $pbyrn)
-                                      <option value="{{ $pbyrn->id }}">{{ $pbyrn->nama }}</option>
-                                  @endforeach
-                              </select>
-                          </div>
-                      </div>
-
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                  <button type="submit" id="simpan" class="btn btn-primary">Simpan Data</button>
-              </div>
-              </form>
-
-          </div>
-      </div>
-  </div>
-    <!-- Modal Edit -->
-    {{-- <div class="modal fade modal-edit" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Transaksi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" id="form-edit" action="#" enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Transaksi</label>
-                                <input type="text" class="form-control @error('transaksi') is-invalid @enderror"
-                                    value="{{ old('transaksi') }}" id="transaksi" name="transaksi" placeholder="Masukan Transaksi" required>
-                                <div class="invalid-feedback">
-                                    Masukan Transaksi
-                                </div>
-                            </div>
-                        </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
-                </div>
-                </form>
-
-            </div>
-        </div>
-    </div> --}}
-
-
-
 @endsection
 @push('down-style')
-<link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-<style>
-    .select2-container--default .select2-selection--multiple .select2-selection__choice {
-        background-color: #007bff !important;
-    }
-    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-        color: #ffffff !important;
-    }
-</style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
 @endpush
 @push('down-script')
-<script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
-
-    @if (count($errors) > 0)
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#exampleModal').modal('show');
-            });
-        </script>
-         <script type="text/javascript">
-            $(document).ready(function () {
-                $('#modal-edit').modal('show');
-            });
-        </script>
-    @endif
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"> </script>
+    <script src="/vendor/datatables/buttons.server-side.js"></script>
+    {{-- {!! $dataTable->scripts() !!} --}}
 
     <script>
-
         $(document).ready(function() {
+            load_data()
 
+            $('#filter').click(function() {
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
 
-        $('#pembayaran').select2()
-        $('#pembayaran_siswa').select2()
-
-
-            $(document).on('click', '#edit', function() {
-                var id = $(this).data('id');
-                var transaksi = $(this).data('transaksi');
-
-                $('#transaksi').val(transaksi);
-
-                $('#form-edit').attr('action','/admin/transaksi/update/' + id);
+                if (from_date != '' && to_date != '') {
+                    $('#table-data').DataTable().destroy();
+                    load_data(from_date, to_date);
+                } else {
+                    alert('Silahkan Pilih Tanggal')
+                }
             });
-        });
-    </script>
-    <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": false,
-                "lengthChange": false,
-                "autoWidth": false,
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "responsive": true,
+
+            $('#refresh').click(function() {
+                $('#from_date').val('');
+                $('#to_date').val('');
+                $('#table-data').DataTable().destroy();
+                load_data();
             });
+
+            function load_data(from_date = '', to_date = '') {
+                var datatable = $('#table-data').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ordering: true,
+                    ajax: {
+                        url: '{!! url()->current() !!}',
+                        type: 'GET',
+                        data: {
+                            from_date: from_date,
+                            to_date: to_date
+                        }
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [{
+                            extend: 'pdfHtml5',
+                            orientation: 'potrait',
+                            footer: true,
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            footer: true,
+                        }
+                    ],
+
+                    columns: [
+                        {
+                            data: 'created_at',
+                            name: 'created_at'
+                        },
+                        {
+                            data: 'kode_transaksi',
+                            name: 'kode_transaksi'
+                        },
+                        {
+                            data: 'klien.name',
+                            name: 'klien.name'
+                        },
+
+                        {
+                            data: 'portfolio.nama_project',
+                            name: 'portfolio.nama_project'
+                        },
+
+                        {
+                            data: 'tipe_transaksi',
+                            name: 'tipe_transaksi'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status'
+                        },
+                        {
+                            data: 'total_harga',
+                            name: 'total_harga',
+                            render: $.fn.dataTable.render.number(',', '.', 0, 'Rp ')
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searcable: false,
+                            width: '10%',
+                        }
+                    ],
+
+                    "footerCallback": function(row, data) {
+                        var api = this.api(),
+                            data;
+
+                        var intVal = function(i) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                        };
+
+                        total = api
+                            .column(6)
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        // Total over this page
+                        price = api
+                            .column(6, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        $(api.column(6).footer()).html(
+                            'Rp' + price
+                        );
+
+                        var numFormat = $.fn.dataTable.render.number('\,', 'Rp').display;
+                        $(api.column(6).footer()).html(
+                            'Rp ' + numFormat(price)
+                        );
+                    }
+
+                });
+            }
+
+
         });
     </script>
 @endpush
