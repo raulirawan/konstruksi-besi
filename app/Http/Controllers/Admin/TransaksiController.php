@@ -96,4 +96,34 @@ class TransaksiController extends Controller
             return redirect()->route('admin.transaksi.detail', $data->transaksi_id)->with('error','Data Gagal di Hapus');
         }
     }
+
+    public function accept(Request $request)
+    {
+        $transaksi = Transaksi::findOrFail($request->transaksi_id);
+
+        $transaksi->mandor_id = $request->mandor_id;
+        $transaksi->is_approve = 'Y';
+        $transaksi->save();
+
+        if($transaksi != null) {
+            return redirect()->route('admin.dashboard.index')->with('success','Data Berhasil di Approve');
+        } else {
+            return redirect()->route('admin.dashboard.index')->with('error','Data Gagal di Approve');
+        }
+    }
+
+    public function reject($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        $transaksi->status = 'BATAL';
+        $transaksi->is_approve = 'N';
+        $transaksi->save();
+
+        if($transaksi != null) {
+            return redirect()->route('admin.dashboard.index')->with('success','Data Berhasil di Reject');
+        } else {
+            return redirect()->route('admin.dashboard.index')->with('error','Data Gagal di Reject');
+        }
+    }
 }

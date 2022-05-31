@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
     Route::get('dashboard','Admin\DashboardController@index')->name('admin.dashboard.index');
 
+
+
     // CRUD KLIEN
     Route::get('klien', 'Admin\KlienController@index')->name('admin.klien.index');
     Route::post('klien/create', 'Admin\KlienController@store')->name('admin.klien.store');
@@ -41,13 +43,29 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
     Route::post('transaksi/add/pembayaran/{id}', 'Admin\TransaksiController@addPembayaran')->name('admin.add.pembayaran');
     Route::delete('transaksi/hapus/pembayaran/{id}', 'Admin\TransaksiController@deletePembayaran')->name('admin.delete.pembayaran');
 
-});
+    Route::post('transaksi/accept','Admin\TransaksiController@accept')->name('admin.accept.transaksi');
+    Route::get('transaksi/reject/{id}','Admin\TransaksiController@reject')->name('admin.reject.transaksi');
 
-Route::prefix('mandor')->middleware(['auth'])->group(function () {
+
+});
+// mandor
+Route::prefix('mandor')->middleware(['auth','mandor'])->group(function () {
     Route::get('dashboard','Mandor\DashboardController@index')->name('mandor.dashboard.index');
     Route::get('detail/pekerjaan/{id}','Mandor\DashboardController@detailPekerjaan')->name('mandor.detail.pekerjaan.index');
+    Route::post('add/progress/{id}','Mandor\DashboardController@addProgress')->name('mandor.add.progress');
+    Route::post('update/progress/{id}','Mandor\DashboardController@updateProgress')->name('mandor.add.progress');
+    Route::delete('delete/progress/{id}','Mandor\DashboardController@deleteProgress')->name('mandor.delete.progress');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('dashboard','Klien\DashboardController@index')->name('klien.dashboard.index');
+    Route::get('order','Klien\OrderController@index')->name('klien.order.index');
+    Route::get('order/form/{id}','Klien\OrderController@orderForm')->name('klien.order.form');
+    Route::post('order/store','Klien\OrderController@orderStore')->name('klien.order.store');
+
+    Route::get('/profil', 'Klien\ProfilController@index')->name('klien.profile.index');
+    Route::post('/update/profil', 'Klien\ProfilController@update')->name('klien.profile.update');
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

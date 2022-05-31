@@ -56,7 +56,7 @@
                                 <th>Gambar</th>
                                 <th>Progress</th>
                                 <th>Status</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,7 +64,7 @@
                                 <tr>
                                     <td>{{ $val->jenis_pekerjaan }}</td>
                                     <td>
-                                        <img src="{{ $item->gambar }}" alt="" style="width: 100px">
+                                        <img src="{{ url($val->gambar) }}" alt="" style="width: 100px">
                                     </td>
                                     <td>{{ $val->keterangan }}</td>
                                     @if ($val->is_approve == 'Y')
@@ -81,7 +81,14 @@
                                     </td>
                                     @endif
                                     <td>
-                                        <form action="{{ route('admin.delete.pembayaran', $val->id) }}"
+                                        <button type="button" id="edit" data-toggle="modal"
+                                        data-target="#modal-edit"
+                                        data-id="{{ $val->id }}"
+                                        data-jenis_pekerjaan="{{ $val->jenis_pekerjaan }}"
+                                        data-progress="{{ $val->keterangan }}"
+                                        data-gambar="{{ $val->gambar }}"
+                                        class="btn btn-sm btn-primary" style='float: left;'>Edit</button>
+                                        <form action="{{ route('mandor.delete.progress', $val->id) }}"
                                             method="POST" style='float: left; padding-left: 5px;'>
                                             @csrf
                                             @method('delete')
@@ -109,7 +116,7 @@
     <!-- /.content -->
   </div>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -120,7 +127,7 @@
               </button>
           </div>
           <div class="modal-body">
-              <form method="POST" action="#" enctype="multipart/form-data">
+              <form method="POST" action="{{ route('mandor.add.progress', $transaksi->id) }}" enctype="multipart/form-data">
                   @csrf
                   <div class="card-body">
                       <div class="form-group">
@@ -150,25 +157,95 @@
       </div>
   </div>
 </div>
-@push('down-script')
-<script>
+<div class="modal fade modal-edit" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Data Portfolio</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="form-edit" action="#" enctype="multipart/form-data">
+                @csrf
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Jenis Pekerjaan</label>
+                        <input type="text" class="form-control"
+                            value="{{ old('jenis_pekerjaan') }}" id="jenis_pekerjaan" name="jenis_pekerjaan" placeholder="Masukan Jenis Pekerjaan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Progress</label>
+                        <input type="text" class="form-control"
+                        value="{{ old('progress') }}" name="progress" id="progress" placeholder="Masukan Progress" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Gambar</label>
+                      <input type="file" class="form-control" name="gambar">
+                      <img src="" alt="" id="gambar" class="mt-2" style="width: 100px">
+                  </div>
+                </div>
 
-  $(function() {
-      $("#example1").DataTable({
-          "responsive": false,
-          "lengthChange": false,
-          "autoWidth": false,
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
-          "paging": true,
-          "lengthChange": false,
-          "searching": false,
-          "ordering": false,
-          "info": false,
-          "autoWidth": false,
-          "responsive": true,
-      });
-  });
-</script>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Simpan Data</button>
+        </div>
+        </form>
+
+    </div>
+</div>
+</div>
+@push('down-script')
+    @if (count($errors) > 0)
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#exampleModal').modal('show');
+            });
+        </script>
+         <script type="text/javascript">
+            $(document).ready(function () {
+                $('#modal-edit').modal('show');
+            });
+        </script>
+    @endif
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '#edit', function() {
+                var id = $(this).data('id');
+                var jenis_pekerjaan = $(this).data('jenis_pekerjaan');
+                var progress = $(this).data('progress');
+                var gambar = $(this).data('gambar');
+                var url = '{{ url('/') }}';
+
+                $('#jenis_pekerjaan').val(jenis_pekerjaan);
+                $('#progress').val(progress);
+                $('#gambar').attr('src', url + '/' + gambar);
+
+
+                $('#form-edit').attr('action','/mandor/update/progress/' + id);
+            });
+        });
+    </script>
+    <script>
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": false,
+                "lengthChange": false,
+                "autoWidth": false,
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
 @endpush
 @endsection

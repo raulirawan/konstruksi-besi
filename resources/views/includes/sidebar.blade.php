@@ -80,6 +80,41 @@
           </li>
           @endif
 
+        @if (Auth::user()->roles == 'KLIEN')
+          <li class="nav-item">
+            <a href="{{ route('klien.dashboard.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('klien.order.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-box"></i>
+              <p>
+                Order
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('klien.dashboard.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+                Pembayaran
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('klien.profile.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+          @endif
+
           <li class="nav-item">
             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">

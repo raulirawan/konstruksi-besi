@@ -55,7 +55,9 @@ class PortfolioController extends Controller
             $nama_file = time()."_".$file->getClientOriginalName();
             $nama_file = str_replace(' ', '', $nama_file);
             $file->move($tujuan_upload,$nama_file);
-            unlink($data->gambar);
+            if(file_exists($data->gambar)) {
+                unlink($data->gambar);
+            }
             $data->gambar = $tujuan_upload.$nama_file;
         }
 
@@ -73,7 +75,9 @@ class PortfolioController extends Controller
         $data = Portfolio::findOrFail($id);
 
         if($data != null) {
-            unlink($data->gambar);
+            if(file_exists($data->gambar)) {
+                unlink($data->gambar);
+            }
             $data->delete();
             return redirect()->route('admin.portfolio.index')->with('success','Data Berhasil di Hapus');
         } else {

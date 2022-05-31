@@ -17,8 +17,8 @@ class IsMandor
     public function handle($request, Closure $next)
     {
         if(Auth::user()->roles == 'MANDOR') {
-            return redirect('/mandor/dashboard');
+            return $next($request);
         }
-        return redirect('/');
+        return redirect('/dashboard');
     }
 }
