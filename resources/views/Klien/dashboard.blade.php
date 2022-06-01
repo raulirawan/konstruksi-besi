@@ -29,7 +29,7 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>{{ $sukses ?? '' }}</h3>
+                  <h3>{{ App\Transaksi::where('user_id', Auth::user()->id)->count() }}</h3>
 
                   <p>Data Transaksi</p>
                 </div>
@@ -43,7 +43,7 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>{{ $pending ?? '' }}</h3>
+                    <h3>{{ $countProgress }}</h3>
 
                   <p>Data Progress</p>
                 </div>
@@ -115,7 +115,7 @@
                                         </td>
                                         @endif
                                         <td>
-                                            <a href="#"  class="btn btn-info btn-sm"><i class="fas fa-eye"></i>Detail</a>
+                                            <a href="{{ route('klien.pekerjaan.detail.index', $item->id) }}"  class="btn btn-info btn-sm"><i class="fas fa-eye"></i>Detail</a>
                                         </td>
 
                                     </tr>

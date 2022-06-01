@@ -29,7 +29,7 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>{{ $sukses ?? '' }}</h3>
+                  <h3>{{ App\Transaksi::where('mandor_id', Auth::user()->id)->where('is_approve','Y')->count() }}</h3>
 
                   <p>Data Pekerjaan</p>
                 </div>
@@ -43,7 +43,7 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>{{ $pending ?? '' }}</h3>
+                  <h3>{{ App\Progress::where('mandor_id', Auth::user()->id)->count() }}</h3>
 
                   <p>Total Progress</p>
                 </div>

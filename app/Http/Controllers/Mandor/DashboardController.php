@@ -12,7 +12,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $pekerjaan = Transaksi::with(['klien','portfolio','mandor'])->where('mandor_id', Auth::user()->id)->get();
+        $pekerjaan = Transaksi::with(['klien','portfolio','mandor'])
+                                ->where('mandor_id', Auth::user()->id)
+                                ->whereIn('status',['SUDAH DP','LUNAS'])
+                                ->where('is_approve','Y')
+                                ->get();
         return view('Mandor.dashboard', compact('pekerjaan'));
     }
 
@@ -59,6 +63,10 @@ class DashboardController extends Controller
         $progress->jenis_pekerjaan = $request->jenis_pekerjaan;
         $progress->keterangan = $request->progress;
 
+        if($progress->is_approve == 'N') {
+            $progress->is_approve = 'P';
+        }
+
         if($request->hasFile('gambar')) {
             $file = $request->file('gambar');
             $tujuan_upload = 'image/progress/';
@@ -74,9 +82,9 @@ class DashboardController extends Controller
         $progress->save();
 
         if($progress != null) {
-            return redirect()->route('mandor.detail.pekerjaan.index', $id)->with('success','Data Berhasil di Update');
+            return redirect()->route('mandor.detail.pekerjaan.index', $progress->transaksi_id)->with('success','Data Berhasil di Update');
         } else {
-            return redirect()->route('mandor.detail.pekerjaan.index', $id)->with('error','Data Gagal di Update');
+            return redirect()->route('mandor.detail.pekerjaan.index', $progress->transaksi_id)->with('error','Data Gagal di Update');
         }
     }
 

@@ -29,7 +29,7 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>{{ $sukses ?? '' }}</h3>
+                  <h3>{{ App\User::where('roles','KLIEN')->count() }}</h3>
 
                   <p>Total Klien</p>
                 </div>
@@ -43,7 +43,7 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>{{ $pending ?? '' }}</h3>
+                    <h3>{{ App\Transaksi::where('status','LUNAS')->count() }}</h3>
 
                   <p>Transaksi Sukses</p>
                 </div>
@@ -57,7 +57,8 @@
               <!-- small box -->
               <div class="small-box bg-warning">
                 <div class="inner">
-                  <h3>{{ $gagal ?? '' }}</h3>
+                <h3>{{ App\Transaksi::where('status','PENDING')->count() }}</h3>
+
 
                   <p>Transaksi Pending</p>
                 </div>
@@ -70,7 +71,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                   <div class="inner">
-                    <h3>{{ $gagal ?? '' }}</h3>
+                    <h3>{{ App\Transaksi::where('status','BATAL')->count() }}</h3>
 
                     <p>Transaksi Batal</p>
                   </div>
@@ -175,41 +176,35 @@
                         <table id="example2" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%">No</th>
+                                    <th>Jenis Pekerjaan</th>
+                                    <th>Mandor</th>
                                     <th>Klien</th>
                                     <th>Project</th>
-                                    <th>Status Transaksi</th>
-                                    <th>Status Pengajuan</th>
-                                    <th style="width: 20%">Aksi</th>
+                                    <th>Gambar</th>
+                                    <th>Status</th>
+                                    <th style="width: 10%">Aksi</th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($mandor as $item)
+                                @foreach ($progress as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->email }}</td>
-                                        @if ($item->no_hp != NULL)
-                                        <td>{{ $item->no_hp }}</td>
-                                        @else
-                                        <td><span class="badge badge-danger">Tidak Ada</span></td>
-                                        @endif
+                                        <td>{{ $item->jenis_pekerjaan }}</td>
+                                        <td>{{ $item->mandor->name }}</td>
+                                        <td>{{ $item->transaksi->klien->name }}</td>
+                                        <td>{{ $item->portfolio->nama_project }}</td>
                                         <td>
-                                            <button type="button" id="edit" data-toggle="modal"
-                                                data-target="#modal-edit" data-id="{{ $item->id }}"
-                                                data-nama_mandor="{{ $item->name }}"
-                                                data-no_hp="{{ $item->no_hp }}"
-                                                class="btn btn-sm btn-primary" style='float: left;'>Edit</button>
-                                            <form action="{{ route('admin.mandor.delete', $item->id) }}"
-                                                method="POST" style='float: left; padding-left: 5px;'>
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Yakin ?')">Hapus</button>
-                                            </form>
+                                            <img src="{{ url($item->gambar) }}" style="width: 100px">
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-warning">PENDING</span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.accept.progress', $item->id) }}" class="btn btn-success btn-sm" onclick="return confirm('Yakin ?')"><i class="fa fa-check"></i></a>
+                                            <a href="{{ route('admin.reject.progress', $item->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ?')"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
 
                             </tbody>
 

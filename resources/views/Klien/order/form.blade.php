@@ -70,7 +70,7 @@
                                 <select name="tipe_transaksi" id="tipe_transaksi" class="form-control" required>
                                     <option value="">Pilih Jenis Transaksi</option>
                                     <option value="BELI">BELI</option>
-                                    <option value="BELI + PASANG">BELI + PASANG</option>
+                                    <option value="BELI DAN PASANG">BELI + PASANG</option>
                                 </select>
                             </div>
                             <div class="form-group" id="form-total" style="display: none">
@@ -109,7 +109,7 @@
         if(tipe_transaksi == 'BELI') {
             $("#form-total").css("display", "block");
             $("#total_harga").val(harga_jual);
-        } else if(tipe_transaksi == 'BELI + PASANG') {
+        } else if(tipe_transaksi == 'BELI DAN PASANG') {
             $("#form-total").css("display", "block");
             $("#total_harga").val(harga_jual_pasang);
         } else {

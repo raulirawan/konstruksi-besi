@@ -50,7 +50,7 @@ class OrderController extends Controller
         $transaksi->is_approve = 'P';
         $transaksi->save();
 
-        if($request->tipe_transaksi == 'BELI + PASANG') {
+        if($request->tipe_transaksi == 'BELI DAN PASANG') {
             $keterangan = 'Pembayaran Tahap 1';
             $totalBayar = $request->total_harga/2;
         } else {
@@ -69,7 +69,7 @@ class OrderController extends Controller
          $midtrans_params = [
             'transaction_details' => [
                 'order_id' => $kode_pembayaran,
-                'gross_amount' => (int) $request->total_harga,
+                'gross_amount' => (int) $totalBayar,
             ],
 
             'customer_details' => [

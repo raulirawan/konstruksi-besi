@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Progress;
 use App\Transaksi;
+use App\Pembayaran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Pembayaran;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
@@ -68,7 +69,7 @@ class TransaksiController extends Controller
     public function addPembayaran(Request $request, $id)
     {
 
-        $kode = 'BYR'.mt_rand(0000,9999);
+        $kode = 'BYR-'.mt_rand(0000,9999);
 
         $pembayaran = new Pembayaran();
         $pembayaran->transaksi_id = $id;
@@ -121,6 +122,34 @@ class TransaksiController extends Controller
         $transaksi->save();
 
         if($transaksi != null) {
+            return redirect()->route('admin.dashboard.index')->with('success','Data Berhasil di Reject');
+        } else {
+            return redirect()->route('admin.dashboard.index')->with('error','Data Gagal di Reject');
+        }
+    }
+
+    public function acceptProgress($id)
+    {
+        $progress = Progress::findOrFail($id);
+
+        $progress->is_approve = 'Y';
+        $progress->save();
+
+        if($progress != null) {
+            return redirect()->route('admin.dashboard.index')->with('success','Data Berhasil di Approve');
+        } else {
+            return redirect()->route('admin.dashboard.index')->with('error','Data Gagal di Approve');
+        }
+    }
+
+    public function rejectProgress($id)
+    {
+        $progress = Progress::findOrFail($id);
+
+        $progress->is_approve = 'N';
+        $progress->save();
+
+        if($progress != null) {
             return redirect()->route('admin.dashboard.index')->with('success','Data Berhasil di Reject');
         } else {
             return redirect()->route('admin.dashboard.index')->with('error','Data Gagal di Reject');
