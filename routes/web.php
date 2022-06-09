@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('home');
+});
 
 Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
     Route::get('dashboard','Admin\DashboardController@index')->name('admin.dashboard.index');
