@@ -51,7 +51,7 @@
                    @foreach ($portfolio as $item)
                    <div class="col-md-4">
                     <div class="card" style="width: 18rem;">
-                        <img src="{{ asset('image/portfolio/1653892671_david-marcu-78A265wPiO4-unsplash.jpeg') }}" class="card-img-top img-fluid">
+                        <img src="{{ asset($item->gambar) }}" class="card-img-top img-fluid">
                         <div class="card-body">
                           <h5 class="card-title mb-3">{{ $item->nama_project }}</h5>
                           <table cellspacing="0" cellpadding="0">
