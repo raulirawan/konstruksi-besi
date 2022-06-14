@@ -90,7 +90,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <img src="{{ url('https://source.unsplash.com/random/300x200') }}" alt="">
+    <img src="{{ asset('assets/logoramajaya.png') }}" width="200px" alt="">
   </div>
   <!-- /.login-logo -->
   <div class="card">

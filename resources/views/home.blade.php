@@ -10,7 +10,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="{{ asset('/frontend') }}/assets/img/favicon.png" rel="icon">
+  <link href="{{ asset('assets/logoramajaya.png') }}" rel="icon">
   <link href="{{ asset('/frontend') }}/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -43,7 +43,7 @@
       <div id="logo" class="me-auto">
         <!-- Uncomment below if you prefer to use a text logo -->
         <!-- <h1><a href="index.html">The<span>Event</span></a></h1>-->
-        <a href="index.html" class="scrollto"><img src="{{ asset('frontend') }}/assets/img/logo.png" alt="" title=""></a>
+        <a href="index.html" class="scrollto"><img src="{{ asset('assets/logoramajaya.png') }}" alt="" title=""></a>
       </div>
 
       <nav id="navbar" class="navbar order-last order-lg-0">
@@ -106,7 +106,7 @@
             <div class="speaker" data-aos="fade-up" data-aos-delay="100">
               <img src="{{ asset($item->gambar) }}" alt="Speaker 1" class="img-fluid">
               <div class="details">
-                <h3><a href="speaker-details.html">{{ $item->nama_project }}</a></h3>
+                <h3><a href="#">{{ $item->nama_project }}</a></h3>
                 {{-- <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
