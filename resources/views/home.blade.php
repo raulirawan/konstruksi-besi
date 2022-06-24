@@ -52,6 +52,7 @@
           <li><a class="nav-link scrollto" href="#about">Tentang</a></li>
           <li><a class="nav-link scrollto" href="#venue">Galeri</a></li>
           <li><a class="nav-link scrollto" href="#contact">Hubungi Kami</a></li>
+          <li><a class="nav-link scrollto" href="{{ route('login') }}">Login</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -106,7 +107,7 @@
             <div class="speaker" data-aos="fade-up" data-aos-delay="100">
               <img src="{{ asset($item->gambar) }}" alt="Speaker 1" class="img-fluid">
               <div class="details">
-                <h3><a href="#">{{ $item->nama_project }}</a></h3>
+                <h3><a href="{{ route('klien.order.index') }}">{{ $item->nama_project }}</a></h3>
                 {{-- <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>

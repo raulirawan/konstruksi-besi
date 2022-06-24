@@ -131,6 +131,7 @@
           <!-- /.col -->
           <div class="col-12 mb-3">
             <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <div class="text-center mt-2">Belum Punya Akun ? <a href="{{ route('register') }}">Register</a></div>
           </div>
           <!-- /.col -->
         </div>
