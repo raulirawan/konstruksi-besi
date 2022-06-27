@@ -76,6 +76,9 @@ class OrderController extends Controller
                 'first_name' => Auth::user()->name,
                 'email' => Auth::user()->email,
             ],
+            'callbacks' => [
+                'finish' => 'https://cvramajaya.my.id/pembayaran',
+            ],
             'enable_payments' => ['bca_va','permata_va','bni_va','bri_va','gopay'],
             'vtweb' => [],
         ];
