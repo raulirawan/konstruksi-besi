@@ -56,7 +56,7 @@
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-      <a class="buy-tickets scrollto" href="#buy-tickets">WhatsApp</a>
+      <a target="_blank" class="buy-tickets scrollto" href="https://wa.me/6285591228543">WhatsApp</a>
 
     </div>
   </header><!-- End Header -->

@@ -105,7 +105,7 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th style="width: 10%">Tangga Transaksi</th>
+                                    <th style="width: 10%">Tanggal Transaksi</th>
                                     <th>Klien</th>
                                     <th>Project</th>
                                     <th style="width: 10%">Status Transaksi</th>
