@@ -57,6 +57,7 @@
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
       <a target="_blank" class="buy-tickets scrollto" href="https://wa.me/6285591228543">WhatsApp</a>
+      <a target="_blank" class="buy-tickets scrollto" href="https://instagram.com/cvramajaya?igshid=YmMyMTA2M2Y=">Instagram</a>
 
     </div>
   </header><!-- End Header -->
@@ -321,7 +322,7 @@
             <div class="contact-address">
               <i class="bi bi-geo-alt"></i>
               <h3>Alamat</h3>
-              <address>Jl. Neraka No. 10</address>
+              <address>Jl. Puri Kembangan</address>
             </div>
           </div>
 
