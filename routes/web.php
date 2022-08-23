@@ -39,6 +39,7 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
     Route::post('mandor/delete/{id}', 'Admin\MandorController@delete')->name('admin.mandor.delete');
 
     Route::get('transaksi','Admin\TransaksiController@index')->name('admin.transaksi.index');
+    Route::get('transaksi/riwayat-pekerjaan','Admin\TransaksiController@riwayatPekerjaan')->name('admin.transaksi.riwayat.pekerjaan');
     Route::get('transaksi/detail/{id}','Admin\TransaksiController@detail')->name('admin.transaksi.detail');
     Route::post('transaksi/add/pembayaran/{id}', 'Admin\TransaksiController@addPembayaran')->name('admin.add.pembayaran');
     Route::delete('transaksi/hapus/pembayaran/{id}', 'Admin\TransaksiController@deletePembayaran')->name('admin.delete.pembayaran');

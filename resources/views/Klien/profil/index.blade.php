@@ -62,6 +62,10 @@
                                 <label for="exampleInputEmail1">Nomor Handphone</label>
                                 <input type="number" class="form-control" name="no_hp" value="{{ Auth::user()->no_hp }}" required>
                             </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Alamat</label>
+                                <textarea name="alamat" id="alamat" class="form-control">{{ Auth::user()->alamat }}</textarea>
+                            </div>
 
 
                         </div>

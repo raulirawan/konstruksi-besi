@@ -19,6 +19,7 @@ class ProfilController extends Controller
         $user = User::where('id', Auth::user()->id)->first();
         $user->name = $request->name;
         $user->no_hp = $request->no_hp;
+        $user->alamat = $request->alamat;
         $user->save();
 
 
