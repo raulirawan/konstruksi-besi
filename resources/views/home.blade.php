@@ -113,8 +113,8 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="speaker" data-aos="fade-up" data-aos-delay="100">
                                 <img src="{{ asset($item->gambar) }}" alt="Speaker 1" class="img-fluid">
-                                <div class="details">
-                                    <h3><a href="{{ route('klien.order.index') }}">{{ $item->nama_project }}</a></h3>
+                                <div class="details" style="bottom: 0">
+                                    <h3><a href="{{ route('klien.order.index') }}" style="font-size: 17px">{{ $item->nama_project }} <br>Stock: {{ mt_rand(20,100) }} <br>Volume: {{ mt_rand(20,100) }} Meter</a></h3>
                                     {{-- <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
